@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Validity State</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      a {
+        color: #a07cc0;
+      }
+      li {
+        font-size: 24pt;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .inverse {
+        background: #000;
+        color: #fff;
+      }
+      .remark-slide-content {
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .stripe {
+        height: 5px;
+        width: 100%;
+        background-color: indigo;
+        border-top: 1px solid rebeccapurple;
+        border-bottom: 1px solid rebeccapurple;
+        position: absolute;
+        margin-top: 125px;
+        left: 0;
+        right: 0;
+      }
+      .remark-slide-right {
+          bottom: 12px;
+          opacity: .5;
+          position: absolute;
+          left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle, inverse
+
+# Form Validation Without A Plugin!
+
+---
+class: left, middle, inverse
+
+# Client-side Form Validation
+
+- Helps the user
+- Tells them why input isn't accepted
+- Stops them from putting in bad data
+
+???
+Client-side validation is here to solve the issue of the user not knowing what to put in this form.
+Most forms seem straight-forward, however if there are any requirements or limitations about what can be entered into the form, our user will probably struggle.
+Validation allows us to help them out as they are filling out the form, so if, for example, the input only accepts numbers, we can let them know.
+---
+class: left, middle, inverse
+
+# Form Validation Plug-ins
+
+- Parsley
+- Bootstrap Validator
+- Smoke
+
+### And the list goes on....
+
+???
+There are a multitude of different plugins out there to help you with form validation.
+---
+class: center, middle, inverse
+
+# Great news!
+
+???
+Now for some good news
+---
+class: center, middle, inverse
+
+# Great news!
+
+# You don't need any of those!
+
+???
+Validation plugins don't have to be exceptionally large, but they can be. Doing form validation without a plugin will keep your application smaller.
+Additionally, plugins limit your choices as a developer because the writer of the plugin has made the decisions already.
+---
+class: left, middle, inverse
+
+# HTML Attributes
+
+- type
+- required
+- minlength
+- maxlength
+
+???
+You're probably already familiar with the attributes above, so you probably already know that all on their own, they don't quite cut it.
+---
+class: center, middle, inverse
+
+# Introducing: [ValidityState](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState)
+
+???
+Fortunately, JavaScript is here to help us out with Validity State.
+---
+class: left, middle, inverse
+
+# ValidityState
+
+- HTML Attributes
+- Built into the browser
+- Great cross-browser support
+- Attached to DOM events
+
+???
+Validity state is just regular javascript, no plugin required. It's an API included in the js spec which hooks into the html form attributes.
+This is great because it puts developers in the driver's seat to decide how their form should behave when there are errors.
+
+You can access the Validity State object through DOM events.
+---
+class: left, middle, inverse
+
+# ValidityState Properties
+
+- valid
+- valueMissing
+- tooLong
+- tooShort
+- patternMismatch
+
+???
+This isn't an exhaustive list, but I think these are some of the most common form validation issues we run across. ValidityState allows us to easily handle for all of these.
+
+Let's take a look at some examples.
+---
+class: left, middle, inverse
+
+# Required
+
+```javascript
+<input id="requiredInput" type="text" required>
+
+function checkInputOnBlur(event) {
+	if(event.target.validity.valueMissing) {
+    // give user error message, or something
+  	alert('Input is required!');
+  }
+}
+```
+
+???
+Required is probably the most common use case for for validation. The user is unable to submit the form without certain fields being filled out.
+
+The above function uses the validity state object to check if the value is missing. If that comes back true, we'll give the user an alert.
+---
+class: left, middle, inverse
+
+# Too Short
+
+```javascript
+<input type="text" id="tooShort" minlength=5>
+
+function checkInputOnBlur(event) {
+	if(event.target.validity.tooShort) {
+    // error handling
+  	alert('You must type at least 5 characters!');
+  }
+}
+```
+
+???
+This example is very similar to the first example. We've set a minlength for the user, which the browser doesn't enforce for us.
+
+If the tooShort property is true, we show an alert, but we could just as easily show an error message, or manipulate the DOM some other way.
+---
+class: left, middle, inverse
+
+# Pattern Mismatch
+
+```javascript
+<input id="requiredInput" type="text" pattern="^[0-9]*$">
+
+function checkInputOnBlur(event) {
+	if(event.target.validity.patternMismatch) {
+    // Let the user know, or perhaps remove any non-numbers
+  	alert('Input must be a number!');
+  }
+}
+```
+
+???
+Pattern Mismatch is a very powerful tool for very specific inputs. The pattern attribute accepts a regex, and the user input is compared to the regex.
+
+If they don't match, the patternMismatch property will be true, which will trigger our if statement. All we are doing right here is showing an alert. But we could do much more.
+For example, if the input were a payrate, we could limit the input to numbers and decimals only by stripping out any non-numeric characters in the if block.
+
+If we were working with a limited set of digits, such as a phone number or zip code, we could limit the input to digits only, as well as limit the length of the input.
+
+So as you can see, ValidityState is a very powerful tool.
+
+Now we can take a look at some demos.
+---
+class: center, middle, inverse
+
+# Demo!
+
+</textarea>
+<script src="./scripts/remark-latest.min.js"></script>
+
+<script>
+      var slideshow = remark.create();
+</script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-# validity_state
+# [validity_state](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState)
 
 - valid
     - checks all input constraints
