@@ -10,3 +10,4 @@
 - [tooLong](https://jsfiddle.net/kce7qsue/1/)
 - [tooShort](https://jsfiddle.net/28r99tnr/2/)
 - [patternMismatch](https://jsfiddle.net/uf9uvjt2/3/)
+- [Robust Zip Code validation example](https://jsfiddle.net/tfqxkm6v/3/)
