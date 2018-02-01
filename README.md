@@ -1,5 +1,7 @@
 # [validity_state](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState)
 
+See examples from presentation below:
+
 - valid
     - checks all input constraints
     - if any constraint is broken, valid will be false
